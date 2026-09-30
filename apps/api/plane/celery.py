@@ -92,6 +92,10 @@ app.conf.beat_schedule = {
         "task": "plane.bgtasks.exporter_expired_task.delete_old_s3_link",
         "schedule": crontab(hour=3, minute=45),  # UTC 03:45
     },
+    "spawn-recurring-issues": {
+        "task": "plane.bgtasks.recurring_issue_task.spawn_recurring_issues",
+        "schedule": crontab(minute="*/15"),
+    },
 }
 
 

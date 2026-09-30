@@ -7,7 +7,7 @@
 import { KeyOutline, MailOutline } from "@makeplane/propel/icons";
 // types
 import type {
-  TCoreInstanceAuthenticationModeKeys,
+  TInstanceAuthenticationModeKeys,
   TGetBaseAuthenticationModeProps,
   TInstanceAuthenticationModes,
 } from "@plane/types";
@@ -23,12 +23,15 @@ import { GiteaConfiguration } from "@/components/authentication/gitea-config";
 import { GithubConfiguration } from "@/components/authentication/github-config";
 import { GitlabConfiguration } from "@/components/authentication/gitlab-config";
 import { GoogleConfiguration } from "@/components/authentication/google-config";
+import { LDAPConfiguration } from "@/components/authentication/ldap-config";
+import { OIDCConfiguration } from "@/components/authentication/oidc-config";
+import { SAMLConfiguration } from "@/components/authentication/saml-config";
 import { PasswordLoginConfiguration } from "@/components/authentication/password-config-switch";
 
 // Authentication methods
 export const getCoreAuthenticationModesMap: (
   props: TGetBaseAuthenticationModeProps
-) => Record<TCoreInstanceAuthenticationModeKeys, TInstanceAuthenticationModes> = ({
+) => Record<TInstanceAuthenticationModeKeys, TInstanceAuthenticationModes> = ({
   disabled,
   updateConfig,
   resolvedTheme,
@@ -88,5 +91,29 @@ export const getCoreAuthenticationModesMap: (
     icon: <img src={giteaLogo} height={20} width={20} alt="Gitea Logo" />,
     config: <GiteaConfiguration disabled={disabled} updateConfig={updateConfig} />,
     enabledConfigKey: "IS_GITEA_ENABLED",
+  },
+  oidc: {
+    key: "oidc",
+    name: "OIDC",
+    description: "Allow members to sign in with any OpenID Connect identity provider.",
+    icon: <KeyOutline className="h-6 w-6 p-0.5 text-tertiary" />,
+    config: <OIDCConfiguration disabled={disabled} updateConfig={updateConfig} />,
+    enabledConfigKey: "IS_OIDC_ENABLED",
+  },
+  saml: {
+    key: "saml",
+    name: "SAML",
+    description: "Allow members to sign in with a SAML 2.0 identity provider.",
+    icon: <KeyOutline className="h-6 w-6 p-0.5 text-tertiary" />,
+    config: <SAMLConfiguration disabled={disabled} updateConfig={updateConfig} />,
+    enabledConfigKey: "IS_SAML_ENABLED",
+  },
+  ldap: {
+    key: "ldap",
+    name: "LDAP",
+    description: "Bind to your directory and optionally sync groups to workspace roles.",
+    icon: <KeyOutline className="h-6 w-6 p-0.5 text-tertiary" />,
+    config: <LDAPConfiguration disabled={disabled} updateConfig={updateConfig} />,
+    enabledConfigKey: "IS_LDAP_ENABLED",
   },
 });

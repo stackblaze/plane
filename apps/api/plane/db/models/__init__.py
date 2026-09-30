@@ -79,7 +79,36 @@ from .workspace import (
 
 from .favorite import UserFavorite
 
-from .issue_type import IssueType
+from .issue_type import IssueType, ProjectIssueType
+from .ext import (
+    CustomProperty,
+    CustomPropertyValue,
+    Worklog,
+    WorklogTimer,
+    Teamspace,
+    TeamspaceMember,
+    TeamspaceProject,
+    Initiative,
+    InitiativeProject,
+    InitiativeIssue,
+    Dashboard,
+    DashboardWidget,
+    Workflow,
+    WorkflowTransition,
+    WorkflowApproval,
+    WorkItemTemplate,
+    ProjectTemplate,
+    RecurringIssue,
+    Customer,
+    CustomerIssue,
+    CustomRole,
+    AccessRule,
+    AuditLog,
+    SLAPolicy,
+    IntakeForm,
+    SCIMToken,
+    RoleAssignment,
+)
 
 from .recent_visit import UserRecentVisit
 

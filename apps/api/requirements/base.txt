@@ -73,3 +73,5 @@ opentelemetry-exporter-otlp-proto-grpc==1.28.1
 drf-spectacular==0.29.0
 # html sanitizer
 nh3==0.2.18
+# ldap bind and group search
+ldap3==2.9.1

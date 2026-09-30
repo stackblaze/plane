@@ -135,3 +135,10 @@ from .draft import (
     DraftIssueSerializer,
     DraftIssueDetailSerializer,
 )
+
+from .ext import (
+    IssueTypeSerializer,
+    ProjectIssueTypeSerializer,
+    CustomPropertySerializer,
+    WorklogSerializer,
+)

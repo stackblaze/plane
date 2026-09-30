@@ -41,7 +41,33 @@ class InstanceConfigurationEndpoint(BaseAPIView):
     @invalidate_cache(path="/api/instances/configurations/", user=False)
     @invalidate_cache(path="/api/instances/", user=False)
     def patch(self, request):
-        configurations = InstanceConfiguration.objects.filter(key__in=request.data.keys())
+        configurations = list(InstanceConfiguration.objects.filter(key__in=request.data.keys()))
+        existing_keys = {configuration.key for configuration in configurations}
+        encrypted_keys = {
+            "OIDC_CLIENT_SECRET",
+            "SAML_IDP_X509",
+            "LDAP_BIND_PASSWORD",
+            "GOOGLE_CLIENT_SECRET",
+            "GITHUB_CLIENT_SECRET",
+            "GITLAB_CLIENT_SECRET",
+            "GITEA_CLIENT_SECRET",
+            "EMAIL_HOST_PASSWORD",
+            "LLM_API_KEY",
+            "UNSPLASH_ACCESS_KEY",
+        }
+        for key in request.data.keys():
+            if key not in existing_keys:
+                raw_value = request.data.get(key)
+                value = "" if raw_value is None else str(raw_value).strip()
+                is_encrypted = key in encrypted_keys
+                configurations.append(
+                    InstanceConfiguration.objects.create(
+                        key=key,
+                        value=value,
+                        category=key.split("_")[0] if "_" in key else "GENERAL",
+                        is_encrypted=is_encrypted,
+                    )
+                )
 
         bulk_configurations = []
         for configuration in configurations:

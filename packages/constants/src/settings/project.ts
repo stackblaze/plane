@@ -107,6 +107,48 @@ export const PROJECT_SETTINGS: Record<TProjectSettingsTabs, TProjectSettingsItem
     access: [EUserProjectRoles.ADMIN],
     highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/automations/`,
   },
+  properties: {
+    key: "properties",
+    i18n_label: "Custom properties",
+    href: `/properties`,
+    access: [EUserProjectRoles.ADMIN],
+    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/properties/`,
+  },
+  workflows: {
+    key: "workflows",
+    i18n_label: "Workflows",
+    href: `/workflows`,
+    access: [EUserProjectRoles.ADMIN],
+    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/workflows/`,
+  },
+  templates: {
+    key: "templates",
+    i18n_label: "Templates",
+    href: `/templates`,
+    access: [EUserProjectRoles.ADMIN],
+    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/templates/`,
+  },
+  "time-tracking": {
+    key: "time-tracking",
+    i18n_label: "Time tracking",
+    href: `/time-tracking`,
+    access: [EUserProjectRoles.ADMIN, EUserProjectRoles.MEMBER],
+    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/time-tracking/`,
+  },
+  slas: {
+    key: "slas",
+    i18n_label: "SLAs",
+    href: `/slas`,
+    access: [EUserProjectRoles.ADMIN],
+    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/slas/`,
+  },
+  "intake-forms": {
+    key: "intake-forms",
+    i18n_label: "Intake forms",
+    href: `/intake-forms`,
+    access: [EUserProjectRoles.ADMIN],
+    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/intake-forms/`,
+  },
 };
 
 export const PROJECT_SETTINGS_FLAT_MAP: TProjectSettingsItem[] = Object.values(PROJECT_SETTINGS);
@@ -124,6 +166,14 @@ export const GROUPED_PROJECT_SETTINGS: Record<PROJECT_SETTINGS_CATEGORY, TProjec
     PROJECT_SETTINGS["states"],
     PROJECT_SETTINGS["labels"],
     PROJECT_SETTINGS["estimates"],
+    PROJECT_SETTINGS["properties"],
+    PROJECT_SETTINGS["workflows"],
+    PROJECT_SETTINGS["templates"],
   ],
-  [PROJECT_SETTINGS_CATEGORY.EXECUTION]: [PROJECT_SETTINGS["automations"]],
+  [PROJECT_SETTINGS_CATEGORY.EXECUTION]: [
+    PROJECT_SETTINGS["automations"],
+    PROJECT_SETTINGS["time-tracking"],
+    PROJECT_SETTINGS["slas"],
+    PROJECT_SETTINGS["intake-forms"],
+  ],
 };
