@@ -19,6 +19,9 @@ export const useAuthenticationModes = (props: TGetAuthenticationModeProps): TIns
     authenticationModes["github"],
     authenticationModes["gitlab"],
     authenticationModes["gitea"],
+    authenticationModes["oidc"],
+    authenticationModes["saml"],
+    authenticationModes["ldap"],
   ];
 
   return availableAuthenticationModes;

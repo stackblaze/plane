@@ -44,6 +44,15 @@ from .views import (
     GiteaOauthInitiateEndpoint,
     GiteaCallbackSpaceEndpoint,
     GiteaOauthInitiateSpaceEndpoint,
+    OIDCOauthInitiateEndpoint,
+    OIDCCallbackEndpoint,
+    OIDCOauthInitiateSpaceEndpoint,
+    OIDCCallbackSpaceEndpoint,
+    SAMLInitiateEndpoint,
+    SAMLCallbackEndpoint,
+    SAMLInitiateSpaceEndpoint,
+    SAMLCallbackSpaceEndpoint,
+    LDAPSignInEndpoint,
 )
 
 urlpatterns = [
@@ -150,4 +159,13 @@ urlpatterns = [
         GiteaCallbackSpaceEndpoint.as_view(),
         name="space-gitea-callback",
     ),
+    path("oidc/", OIDCOauthInitiateEndpoint.as_view(), name="oidc-initiate"),
+    path("oidc/callback/", OIDCCallbackEndpoint.as_view(), name="oidc-callback"),
+    path("spaces/oidc/", OIDCOauthInitiateSpaceEndpoint.as_view(), name="space-oidc-initiate"),
+    path("spaces/oidc/callback/", OIDCCallbackSpaceEndpoint.as_view(), name="space-oidc-callback"),
+    path("saml/", SAMLInitiateEndpoint.as_view(), name="saml-initiate"),
+    path("saml/callback/", SAMLCallbackEndpoint.as_view(), name="saml-callback"),
+    path("spaces/saml/", SAMLInitiateSpaceEndpoint.as_view(), name="space-saml-initiate"),
+    path("spaces/saml/callback/", SAMLCallbackSpaceEndpoint.as_view(), name="space-saml-callback"),
+    path("ldap/", LDAPSignInEndpoint.as_view(), name="ldap-sign-in"),
 ]

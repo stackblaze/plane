@@ -12,7 +12,9 @@ export type TCoreInstanceAuthenticationModeKeys =
   | "gitlab"
   | "gitea";
 
-export type TInstanceAuthenticationModeKeys = TCoreInstanceAuthenticationModeKeys;
+export type TInstanceAuthenticationModeKeys =
+  | TCoreInstanceAuthenticationModeKeys
+  | import("./auth-ee").TExtendedInstanceAuthenticationModeKeys;
 
 export type TInstanceAuthenticationModes = {
   key: TInstanceAuthenticationModeKeys;
@@ -31,7 +33,10 @@ export type TInstanceAuthenticationMethodKeys =
   | "IS_GOOGLE_ENABLED"
   | "IS_GITHUB_ENABLED"
   | "IS_GITLAB_ENABLED"
-  | "IS_GITEA_ENABLED";
+  | "IS_GITEA_ENABLED"
+  | "IS_OIDC_ENABLED"
+  | "IS_SAML_ENABLED"
+  | "IS_LDAP_ENABLED";
 
 export type TInstanceGoogleAuthenticationConfigurationKeys =
   | "GOOGLE_CLIENT_ID"
@@ -60,7 +65,10 @@ export type TInstanceAuthenticationConfigurationKeys =
   | TInstanceGoogleAuthenticationConfigurationKeys
   | TInstanceGithubAuthenticationConfigurationKeys
   | TInstanceGitlabAuthenticationConfigurationKeys
-  | TInstanceGiteaAuthenticationConfigurationKeys;
+  | TInstanceGiteaAuthenticationConfigurationKeys
+  | import("./auth-ee").TInstanceOIDCAuthenticationConfigurationKeys
+  | import("./auth-ee").TInstanceSAMLAuthenticationConfigurationKeys
+  | import("./auth-ee").TInstanceLDAPAuthenticationConfigurationKeys;
 
 export type TInstanceAuthenticationKeys = TInstanceAuthenticationMethodKeys | TInstanceAuthenticationConfigurationKeys;
 

@@ -34,4 +34,10 @@ export const PROJECT_SETTINGS_ICONS: Record<TProjectSettingsTabs, LucideIcon | R
   labels: LabelPropertyIcon,
   estimates: EstimatePropertyIcon,
   automations: Zap,
+  properties: LabelPropertyIcon,
+  workflows: StatePropertyIcon,
+  templates: PageIcon,
+  "time-tracking": EstimatePropertyIcon,
+  slas: Zap,
+  "intake-forms": IntakeIcon,
 };
