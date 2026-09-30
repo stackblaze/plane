@@ -1,0 +1,70 @@
+name: Build fork images
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [preview]
+
+concurrency:
+  group: plane-images-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: [self-hosted, us-east-1]
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: plane-admin
+            context: .
+            file: ./apps/admin/Dockerfile.admin
+          - name: plane-frontend
+            context: .
+            file: ./apps/web/Dockerfile.web
+          - name: plane-space
+            context: .
+            file: ./apps/space/Dockerfile.space
+          - name: plane-live
+            context: .
+            file: ./apps/live/Dockerfile.live
+          - name: plane-backend
+            context: ./apps/api
+            file: ./apps/api/Dockerfile.api
+          - name: plane-proxy
+            context: ./apps/proxy
+            file: ./apps/proxy/Dockerfile.ce
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Image tag
+        id: ver
+        run: echo "short=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
+          push: true
+          platforms: linux/amd64
+          tags: |
+            ghcr.io/stackblaze/${{ matrix.name }}:latest
+            ghcr.io/stackblaze/${{ matrix.name }}:sha-${{ steps.ver.outputs.short }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/stackblaze/plane
