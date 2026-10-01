@@ -1,8 +1,10 @@
 #!/bin/bash
 set -e
 python manage.py wait_for_db
-# Wait for migrations
-python manage.py wait_for_migrations
+# The api is the migrator: it runs the schema forward before anything else
+# starts (worker and beat keep waiting on wait_for_migrations). Template
+# deploys have no separate migrator service.
+python manage.py migrate --noinput
 
 # Create the default bucket
 #!/bin/bash
