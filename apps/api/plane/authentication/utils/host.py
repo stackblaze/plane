@@ -13,6 +13,21 @@ from rest_framework.request import Request
 from plane.utils.ip_address import get_client_ip
 
 
+def request_origin(request: Request | HttpRequest) -> str:
+    """Scheme and host the client used, read through the proxy's forwarded
+    headers. On a template deploy every surface (web, api, spaces, live) is
+    served from one origin by the proxy, so the request's own origin is the
+    web app's origin whenever WEB_URL was not set."""
+    meta = getattr(request, "META", None) or {}
+    host = (meta.get("HTTP_X_FORWARDED_HOST") or meta.get("HTTP_HOST") or "").split(",")[0].strip()
+    if not host:
+        return ""
+    proto = (meta.get("HTTP_X_FORWARDED_PROTO") or "").split(",")[0].strip().lower()
+    if proto not in ("http", "https"):
+        proto = "https" if request.is_secure() else "http"
+    return f"{proto}://{host}"
+
+
 def base_host(
     request: Request | HttpRequest,
     is_admin: bool = False,
@@ -21,7 +36,7 @@ def base_host(
 ) -> str:
     """Utility function to return host / origin from the request"""
     # Calculate the base origin from request
-    base_origin = settings.WEB_URL or settings.APP_BASE_URL
+    base_origin = settings.WEB_URL or settings.APP_BASE_URL or request_origin(request)
 
     # Admin redirection
     if is_admin:
