@@ -97,6 +97,7 @@ export function IssueExtPanels(props: Props) {
           <Button
             variant="secondary"
             size="sm"
+            stretch="auto"
             disabled={disabled}
             label="Log time"
             onClick={() => {
@@ -112,6 +113,7 @@ export function IssueExtPanels(props: Props) {
           <Button
             variant="secondary"
             size="sm"
+            stretch="auto"
             disabled={disabled}
             label={timerOn ? "Stop timer" : "Start timer"}
             onClick={() => {

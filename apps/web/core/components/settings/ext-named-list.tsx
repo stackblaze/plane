@@ -52,12 +52,13 @@ export function ExtNamedList(props: Props) {
         <Button
           variant="primary"
           size="sm"
+          stretch="auto"
           label="Add"
           onClick={() => {
             if (!name.trim()) return;
-            void extService.create(createPath || listPath, { [nameKey]: name, ...(extraCreate || {}) }).then(() => {
+            void extService.create(createPath || listPath, { [nameKey]: name, ...extraCreate }).then(() => {
               setName("");
-              reload();
+              return reload();
             });
           }}
         />
@@ -72,6 +73,7 @@ export function ExtNamedList(props: Props) {
             <Button
               variant="tertiary"
               size="sm"
+              stretch="auto"
               label="Remove"
               onClick={() => {
                 void extService.remove(`${createPath || listPath}${item.id}/`).then(reload);
