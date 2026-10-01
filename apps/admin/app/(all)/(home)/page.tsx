@@ -8,7 +8,6 @@ import { observer } from "mobx-react";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
 import { InstanceFailureView } from "@/components/instance/failure";
-import { InstanceSetupForm } from "@/components/instance/setup-form";
 // hooks
 import { useInstance } from "@/hooks/store";
 // components
@@ -33,18 +32,13 @@ function HomePage() {
     return <InstanceFailureView />;
   }
 
-  // if instance is fetched and setup is not done, show setup form
-  if (instance && !instance?.is_setup_done) {
-    return <InstanceSetupForm />;
-  }
-
-  // if instance is fetched and setup is done, show sign in form
+  // Instance admin is created from ADMIN_EMAIL / ADMIN_PASSWORD. No god-mode wizard.
   return <InstanceSignInForm />;
 }
 
 export default observer(HomePage);
 
 export const meta: Route.MetaFunction = () => [
-  { title: "Admin – Instance Setup & Sign-In" },
-  { name: "description", content: "Configure your Plane instance or sign in to the admin portal." },
+  { title: "Admin – Sign-In" },
+  { name: "description", content: "Sign in to the Plane admin portal." },
 ];

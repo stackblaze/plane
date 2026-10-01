@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import useSWR from "swr";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
-import { InstanceNotReady, MaintenanceView } from "@/components/instance";
+import { MaintenanceView } from "@/components/instance";
 // hooks
 import { useInstance } from "@/hooks/store/use-instance";
 
@@ -41,9 +41,8 @@ const InstanceWrapper = observer(function InstanceWrapper(props: TInstanceWrappe
   // something went wrong while in the request
   if (error && error?.status === "error") return <>{children}</>;
 
-  // instance is not ready and setup is not done
-  if (instance?.is_setup_done === false) return <InstanceNotReady />;
-
+  // Instance admin is seeded from ADMIN_EMAIL / ADMIN_PASSWORD on API boot.
+  // Show login instead of /god-mode even if setup is still catching up.
   return <>{children}</>;
 });
 
