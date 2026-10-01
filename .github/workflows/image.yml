@@ -21,9 +21,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: plane-admin
-            context: .
-            file: ./apps/admin/Dockerfile.admin
           - name: plane-frontend
             context: .
             file: ./apps/web/Dockerfile.web
