@@ -25,6 +25,9 @@ python manage.py register_instance "$MACHINE_SIGNATURE"
 # Load the configuration variable
 python manage.py configure_instance
 
+# Skip /god-mode: seed admin + first workspace from ADMIN_* / WORKSPACE_* env
+python manage.py seed_from_env
+
 # Create the default bucket
 python manage.py create_bucket
 
