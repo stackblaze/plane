@@ -7,7 +7,7 @@
 import { observer } from "mobx-react";
 import useSWR from "swr";
 import { PageWrapper } from "@/components/common/page-wrapper";
-import { Skeleton } from "@/components/common/skeleton";
+import { Loader } from "@plane/ui";
 import { InstanceExtConfigForm } from "@/components/authentication/ext-config-form";
 import { useInstance } from "@/hooks/store";
 import type { Route } from "./+types/page";
@@ -36,9 +36,9 @@ const Page = observer(function Page(_props: Route.ComponentProps) {
           ]}
         />
       ) : (
-        <Skeleton className="space-y-8">
-          <Skeleton.Item height="50px" />
-        </Skeleton>
+        <Loader className="space-y-8">
+          <Loader.Item height="50px" />
+        </Loader>
       )}
     </PageWrapper>
   );

@@ -9,8 +9,8 @@ import { isEmpty } from "lodash-es";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { API_BASE_URL } from "@plane/constants";
-import { Button } from "@makeplane/propel/components/button";
-import { setToast } from "@plane/blocks/toast";
+import { Button, getButtonStyling } from "@plane/propel/button";
+import { TOAST_TYPE, setToast } from "@plane/propel/toast";
 import type { IFormattedInstanceConfiguration } from "@plane/types";
 import { ConfirmDiscardModal } from "@/components/common/confirm-discard-modal";
 import { ControllerInput } from "@/components/common/controller-input";
@@ -37,9 +37,10 @@ export function InstanceExtConfigForm(props: Props) {
   const { config, title, enableKey, fields, callbackPath } = props;
   const [isDiscardChangesModalOpen, setIsDiscardChangesModalOpen] = useState(false);
   const { updateInstanceConfigurations } = useInstance();
-  const defaultValues = Object.fromEntries(
-    [...fields.map((field) => [field.key, config[field.key as keyof IFormattedInstanceConfiguration] || ""]), [enableKey, config[enableKey as keyof IFormattedInstanceConfiguration] || "0"]]
-  );
+  const defaultValues = Object.fromEntries([
+    ...fields.map((field) => [field.key, config[field.key as keyof IFormattedInstanceConfiguration] || ""]),
+    [enableKey, config[enableKey as keyof IFormattedInstanceConfiguration] || "0"],
+  ]);
   const {
     handleSubmit,
     control,
@@ -52,7 +53,7 @@ export function InstanceExtConfigForm(props: Props) {
   const onSubmit = async (formData: Record<string, string>) => {
     try {
       const response = await updateInstanceConfigurations(formData);
-      setToast({ type: "success", title: "Done!", message: `${title} authentication is configured.` });
+      setToast({ type: TOAST_TYPE.SUCCESS, title: "Done!", message: `${title} authentication is configured.` });
       reset(
         Object.fromEntries(
           Object.keys(defaultValues).map((key) => [key, response.find((item) => item.key === key)?.value || ""])
@@ -82,34 +83,34 @@ export function InstanceExtConfigForm(props: Props) {
               label={field.label}
               placeholder=""
               error={false}
-              required={field.required}
+              required={!!field.required}
             />
           ))}
           <ControllerSwitch control={control} field={{ name: enableKey, label: title }} />
           <div className="flex items-center gap-4 pt-4">
             <Button
               variant="primary"
-              size="md"
-              stretch="auto"
+              size="lg"
               onClick={(e) => void handleSubmit(onSubmit)(e)}
               loading={isSubmitting}
               disabled={!isDirty}
-              label={isSubmitting ? "Saving" : "Save changes"}
-            />
-            <Button
-              variant="secondary"
-              size="md"
-              stretch="auto"
-              nativeButton={false}
-              render={<Link href="/authentication" />}
-              label="Go back"
-            />
+            >
+              {isSubmitting ? "Saving" : "Save changes"}
+            </Button>
+            <Link href="/authentication" className={getButtonStyling("secondary", "lg")}>
+              Go back
+            </Link>
           </div>
         </div>
         <div className="col-span-2 flex flex-col gap-y-6 md:col-span-1">
           <div className="pt-2 text-18 font-medium">Callback</div>
           <div className="flex flex-col gap-y-4 rounded-lg bg-layer-1 px-6 py-4">
-            <CopyField key="callback" label="Callback URI" url={`${originURL}${callbackPath}`} description={<p>Register this URL with your identity provider.</p>} />
+            <CopyField
+              key="callback"
+              label="Callback URI"
+              url={`${originURL}${callbackPath}`}
+              description={<p>Register this URL with your identity provider.</p>}
+            />
           </div>
         </div>
       </div>

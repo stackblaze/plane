@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { Button } from "@makeplane/propel/components/button";
+import { Button } from "@plane/propel/button";
 import { SettingsContentWrapper } from "@/components/settings/content-wrapper";
 import { SettingsHeading } from "@/components/settings/heading";
 import { extService } from "@/services/ext.service";
@@ -52,8 +52,6 @@ export function ExtNamedList(props: Props) {
         <Button
           variant="primary"
           size="sm"
-          stretch="auto"
-          label="Add"
           onClick={() => {
             if (!name.trim()) return;
             void extService.create(createPath || listPath, { [nameKey]: name, ...extraCreate }).then(() => {
@@ -61,7 +59,9 @@ export function ExtNamedList(props: Props) {
               return reload();
             });
           }}
-        />
+        >
+          Add
+        </Button>
       </div>
       <ul className="divide-y divide-subtle">
         {items.map((item) => (
@@ -73,12 +73,12 @@ export function ExtNamedList(props: Props) {
             <Button
               variant="tertiary"
               size="sm"
-              stretch="auto"
-              label="Remove"
               onClick={() => {
                 void extService.remove(`${createPath || listPath}${item.id}/`).then(reload);
               }}
-            />
+            >
+              Remove
+            </Button>
           </li>
         ))}
         {items.length === 0 && <li className="py-6 text-12 text-tertiary">Nothing here yet.</li>}

@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { Button } from "@makeplane/propel/components/button";
+import { Button } from "@plane/propel/button";
 import { extService } from "@/services/ext.service";
 
 type Props = {
@@ -97,9 +97,7 @@ export function IssueExtPanels(props: Props) {
           <Button
             variant="secondary"
             size="sm"
-            stretch="auto"
             disabled={disabled}
-            label="Log time"
             onClick={() => {
               void extService
                 .create(`workspaces/${workspaceSlug}/projects/${projectId}/issues/${issueId}/worklogs/`, {
@@ -109,19 +107,21 @@ export function IssueExtPanels(props: Props) {
                 })
                 .then(reload);
             }}
-          />
+          >
+            Log time
+          </Button>
           <Button
             variant="secondary"
             size="sm"
-            stretch="auto"
             disabled={disabled}
-            label={timerOn ? "Stop timer" : "Start timer"}
             onClick={() => {
               const path = `workspaces/${workspaceSlug}/projects/${projectId}/issues/${issueId}/timer/`;
               const action = timerOn ? extService.remove(path) : extService.create(path, { description: note });
               void action.then(reload);
             }}
-          />
+          >
+            {timerOn ? "Stop timer" : "Start timer"}
+          </Button>
         </div>
         <ul className="space-y-1 text-12 text-tertiary">
           {logs.map((log) => (

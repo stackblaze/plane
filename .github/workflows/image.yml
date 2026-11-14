@@ -3,7 +3,9 @@ name: Build fork images
 on:
   workflow_dispatch:
   push:
-    branches: [preview]
+    # preview publishes :latest (what the catalog template pulled until it was
+    # pinned). dean/** branches publish only sha-<sha>, for testing on dev.
+    branches: [preview, 'dean/**']
 
 concurrency:
   group: plane-images-${{ github.ref }}
@@ -61,7 +63,7 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: |
-            ghcr.io/stackblaze/${{ matrix.name }}:latest
+            ${{ github.ref == 'refs/heads/preview' && format('ghcr.io/stackblaze/{0}:latest', matrix.name) || '' }}
             ghcr.io/stackblaze/${{ matrix.name }}:sha-${{ steps.ver.outputs.short }}
           labels: |
             org.opencontainers.image.source=https://github.com/stackblaze/plane
