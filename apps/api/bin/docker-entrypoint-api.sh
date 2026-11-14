@@ -4,10 +4,9 @@ python manage.py wait_for_db
 # The api is the migrator: it runs the schema forward before anything else
 # starts (worker and beat keep waiting on wait_for_migrations). Template
 # deploys have no separate migrator service.
-python manage.py migrate --noinput
-
-# Create the default bucket
-#!/bin/bash
+# migrate_locked: concurrent starts (a rollout during the first boot) wait on a
+# Postgres advisory lock instead of racing on the same migrations.
+python manage.py migrate_locked
 
 # Collect system information
 HOSTNAME=$(hostname)

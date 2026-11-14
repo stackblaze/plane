@@ -17,8 +17,10 @@
 
 	reverse_proxy /static/* api:8000
 
-	reverse_proxy /{$BUCKET_NAME}/* plane-minio:9000
-	reverse_proxy /{$BUCKET_NAME} plane-minio:9000
+	# StackBlaze: the S3 add-on's injected S3_HOST/S3_PORT when present
+	# (shared bucket gateway), else upstream's plane-minio service.
+	reverse_proxy /{$BUCKET_NAME}/* {$S3_HOST:plane-minio}:{$S3_PORT:9000}
+	reverse_proxy /{$BUCKET_NAME} {$S3_HOST:plane-minio}:{$S3_PORT:9000}
 
 	reverse_proxy /* web:3000
 }
