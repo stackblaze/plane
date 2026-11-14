@@ -86,6 +86,13 @@ def seed_instance_from_env() -> dict:
     if company and instance.instance_name != company:
         instance.instance_name = company
         changed.append("instance_name")
+    # Telemetry (OTLP metrics to telemetry.plane.so) is on by default and is
+    # normally switched off in /god-mode, which this fork does not deploy.
+    # ENABLE_TELEMETRY=0 turns it off; unset keeps the stored value.
+    telemetry = _env("ENABLE_TELEMETRY")
+    if telemetry in ("0", "1") and instance.is_telemetry_enabled != (telemetry == "1"):
+        instance.is_telemetry_enabled = telemetry == "1"
+        changed.append("is_telemetry_enabled")
     if changed:
         instance.save()
 
