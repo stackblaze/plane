@@ -325,7 +325,13 @@ RABBITMQ_VHOST = os.environ.get("RABBITMQ_VHOST", "/")
 AMQP_URL = os.environ.get("AMQP_URL")
 
 # Celery Configuration
-if AMQP_URL:
+# StackBlaze fork: an explicit CELERY_BROKER_URL wins (the catalog template
+# points it at the Valkey add-on's REDIS_URL). RabbitMQ is only the Celery
+# broker in Plane, and the platform injects no RabbitMQ credentials, so a
+# RabbitMQ add-on would need a literal password in the template.
+if os.environ.get("CELERY_BROKER_URL"):
+    CELERY_BROKER_URL = os.environ["CELERY_BROKER_URL"]
+elif AMQP_URL:
     CELERY_BROKER_URL = AMQP_URL
 else:
     CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}:{RABBITMQ_PORT}/{RABBITMQ_VHOST}"
